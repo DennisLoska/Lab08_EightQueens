@@ -88,7 +88,7 @@ public class Chessboard {
                 if (board.getField(r + 1, c + 1).hasQueen()) {
 
                     // horizontal check
-                    for (int i=c+1; i < 8; i++) {
+                    for (int i = c + 1; i < 8; i++) {
                         if (board.getField(r + 1, i + 1).hasQueen()) {
                             flag = true;
                             System.out.println("found horizontal!");
@@ -96,7 +96,7 @@ public class Chessboard {
                     }
 
                     // vertical check
-                    for (int i = r+1; i < 8; i++) {
+                    for (int i = r + 1; i < 8; i++) {
                         if (board.getField(i + 1, c + 1).hasQueen()) {
                             flag = true;
                             System.out.println("found vertical!");
