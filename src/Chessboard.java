@@ -19,9 +19,10 @@ public class Chessboard {
      */
     public static void main(String[] args) {
         board = new Chessboard();
-        board.getField(6, 3);
-        board.putQueen(6, 3);
-        System.out.println(board.getField(6, 3).hasQueen());
+        board.putQueen(1, 1);
+        board.putQueen(5, 5);
+        board.displayBoard();
+        board.checkThreat();
     }
 
     /*
@@ -53,6 +54,13 @@ public class Chessboard {
                         field.setDisplay(1);
                     }
                 }
+            }
+        }
+    }
+
+    private void displayBoard() {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
                 System.out.print(chessBoard.get(row).get(col).getDisplay() + " ");
                 if (col == 7) System.out.print("\n");
             }
@@ -71,31 +79,35 @@ public class Chessboard {
      */
     private void putQueen(int row, int column) {
         chessBoard.get(row - 1).get(column - 1).setHasQueen(true);
+        chessBoard.get(row - 1).get(column - 1).setDisplay(2);
     }
 
     private void checkThreat() {
         for (int r = 0; r < 8; r++) {
             for (int c = 0; c < 8; c++) {
-                if (board.getField(c, r).hasQueen()) {
+                if (board.getField(c + 1, r + 1).hasQueen()) {
 
                     // horizontal check
                     for (int i = c++; i < 8; i++) {
-                        if (board.getField(r, i).hasQueen()) {
+                        if (board.getField(r + 1, i + 1).hasQueen()) {
                             flag = true;
+                            System.out.println("found horizontal!");
                         }
                     }
 
                     // vertical check
                     for (int i = r++; i < 8; i++) {
-                        if (board.getField(i, c).hasQueen()) {
+                        if (board.getField(i + 1, c + 1).hasQueen()) {
                             flag = true;
+                            System.out.println("found vertical!");
                         }
                     }
 
                     // descending diagonal check
                     for (int i = r++; i < 8; i++) {
-                        if (board.getField(i, i).hasQueen()){
+                        if (board.getField(i + 1, i + 1).hasQueen()) {
                             flag = true;
+                            System.out.println("found diagonally!");
                         }
                     }
 
