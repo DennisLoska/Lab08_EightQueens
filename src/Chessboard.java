@@ -6,7 +6,6 @@ public class Chessboard {
     private static Chessboard board;
     private boolean flag;
 
-
     /*
         Konstruktor
      */
@@ -30,28 +29,19 @@ public class Chessboard {
      */
     private void createBoard(ArrayList<ArrayList<ChessField>> chessBoard) {
         for (int row = 0; row < 8; row++) {
-            ArrayList<ChessField> rowList;
-            chessBoard.add(row, rowList = new ArrayList<>());
+            chessBoard.add(row, new ArrayList<>());
             for (int col = 0; col < 8; col++) {
                 if (row % 2 == 0) {
                     if (col % 2 == 0) {
-                        ChessField field = new ChessField(col, row);
-                        chessBoard.get(row).add(col, field);
-                        field.setDisplay(0);
+                        createChessField(col, row, 0);
                     } else {
-                        ChessField field = new ChessField(col, row);
-                        chessBoard.get(row).add(col, field);
-                        field.setDisplay(1);
+                        createChessField(col, row, 1);
                     }
                 } else {
                     if (col % 2 != 0) {
-                        ChessField field = new ChessField(col, row);
-                        chessBoard.get(row).add(col, field);
-                        field.setDisplay(0);
+                        createChessField(col, row, 0);
                     } else {
-                        ChessField field = new ChessField(col, row);
-                        chessBoard.get(row).add(col, field);
-                        field.setDisplay(1);
+                        createChessField(col, row, 1);
                     }
                 }
             }
@@ -65,6 +55,12 @@ public class Chessboard {
                 if (col == 7) System.out.print("\n");
             }
         }
+    }
+
+    private void createChessField(int col, int row, int n) {
+        ChessField field = new ChessField(col, row);
+        chessBoard.get(row).add(col, field);
+        field.setDisplay(n);
     }
 
     /*
