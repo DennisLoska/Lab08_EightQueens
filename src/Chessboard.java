@@ -2,10 +2,16 @@ public class Chessboard {
 
     public int[][] chessBoard = new int[8][8];
 
+    /*
+        Konstruktor
+     */
     public Chessboard(){
         createBoard(chessBoard);
     }
 
+    /*
+        Main-Methode zum Erstellen des Bretts.
+     */
     public static void main(String[] args){
         Chessboard board = new Chessboard();
     }
