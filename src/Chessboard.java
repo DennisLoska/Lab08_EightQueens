@@ -1,6 +1,6 @@
 public class Chessboard {
 
-    public int[][] chessBoard = new int[8][8];
+    private int[][] chessBoard = new int[8][8];
 
     /*
         Konstruktor
@@ -15,7 +15,6 @@ public class Chessboard {
     public static void main(String[] args){
         Chessboard board = new Chessboard();
         board.selectField(3,6);
-        System.out.println(board.selectField(2,2));
     }
 
     /*
@@ -25,11 +24,11 @@ public class Chessboard {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (i%2==0) {
-                    if (j % 2 == 0) chessBoard[i][j] = 0;
-                    else chessBoard[i][j] = 1;
+                    if (j % 2 == 0) chessBoard[i][j] = new ChessField(0, i,j).getDisplay();
+                    else chessBoard[i][j] = new ChessField(1,i,j).getDisplay();
                 } else {
-                    if (j % 2 != 0) chessBoard[i][j] = 0;
-                    else chessBoard[i][j] = 1;
+                    if (j % 2 != 0) chessBoard[i][j] = new ChessField(0,i,j).getDisplay();
+                    else chessBoard[i][j] = new ChessField(1,i,j).getDisplay();
                 }
                 System.out.print(chessBoard[i][j]+" ");
                 if (j==7) System.out.print("\n");
@@ -37,7 +36,11 @@ public class Chessboard {
         }
     }
 
+    /*
+        Gibt das entsprechende Schachfeld zurück (-1 da Array bei 0 anfängt)
+     */
     private int selectField(int column, int row){
         return chessBoard[row-1][column-1];
     }
+
 }
