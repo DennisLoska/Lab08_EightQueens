@@ -59,6 +59,9 @@ public class Chessboard {
         }
     }
 
+    /*
+        displays the chessboard: 0: white 1: black 2: queen
+     */
     private void displayBoard() {
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
@@ -68,6 +71,9 @@ public class Chessboard {
         }
     }
 
+    /*
+        creates a single ChessField object and adds it to the chessBoard
+     */
     private void createChessField(int col, int row, int n) {
         ChessField field = new ChessField(col, row);
         chessBoard.get(row).add(col, field);
@@ -89,6 +95,9 @@ public class Chessboard {
         chessBoard.get(row - 1).get(column - 1).setDisplay(2);
     }
 
+    /*
+        Checks weither Queens are threatening each other
+     */
     private void checkThreat() {
         int queenCounter = 0;
         for (int r = 0; r < 8; r++) {
