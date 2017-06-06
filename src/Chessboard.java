@@ -4,10 +4,18 @@ public class Chessboard {
 
     private ArrayList<ArrayList<ChessField>> chessBoard = new ArrayList<ArrayList<ChessField>>();
     private static Chessboard board;
-    private boolean flag;
+    private boolean isThreat = false;
+    private ChessField firstFound;
 
     /*
-        Konstruktor
+        Getter & Setter:
+     */
+    public boolean isThreat() {
+        return isThreat;
+    }
+
+    /*
+        Konstruktor:
      */
     public Chessboard() {
         createBoard(chessBoard);
@@ -19,7 +27,7 @@ public class Chessboard {
     public static void main(String[] args) {
         board = new Chessboard();
 
-        //adding some queens
+        //adding 8 queens
         board.putQueen(4, 1);
         board.putQueen(5, 2);
         board.putQueen(8, 1);
@@ -28,15 +36,21 @@ public class Chessboard {
         board.putQueen(2, 3);
         board.putQueen(6, 7);
         board.putQueen(3, 3);
-        board.putQueen(4, 4);
 
+        //initializing problem/threats
         board.displayBoard();
         board.checkThreat();
+        System.out.println(board.isThreat() + "\n");
+
+        //fixing problem by using recursion in backTrackQueens()
+        board.backTrackQueens();
+        board.checkThreat();
+        System.out.println(board.isThreat());
     }
 
     /*
         Erstellt ein Schachbrett aus ints, wo "display 0 für "weiß" und 1 für "schwarz"
-        steht. Dieses wird dann in der Konsole angezeigt.
+        steht. Dieses wird dann in der Konsole angezeigt. **AUFGABE 1**
      */
     private void createBoard(ArrayList<ArrayList<ChessField>> chessBoard) {
         for (int row = 0; row < 8; row++) {
@@ -96,13 +110,23 @@ public class Chessboard {
     }
 
     /*
-        Checks weither Queens are threatening each other
+        for later usage in recursive method
      */
-    private void checkThreat() {
+    private void removeQueen(int row, int column) {
+        chessBoard.get(row - 1).get(column - 1).setHasQueen(false);
+        if (column % 2 == 0) chessBoard.get(row - 1).get(column - 1).setDisplay(0);
+        else chessBoard.get(row - 1).get(column - 1).setDisplay(1);
+    }
+
+    /*
+        Checked, ob Damen sich gefährden **AUFGABE 2**
+     */
+    private boolean checkThreat() {
         int queenCounter = 0;
         for (int r = 0; r < 8; r++) {
             for (int c = 0; c < 8; c++) {
-                if (board.getField(r + 1, c + 1).hasQueen()) {
+                firstFound = board.getField(r + 1, c + 1);
+                if (firstFound.hasQueen()) {
                     // horizontal check
                     horizontalCheck(c, r, queenCounter);
                     // vertical check
@@ -119,12 +143,13 @@ public class Chessboard {
             }
             queenCounter++;
         }
+        return isThreat;
     }
 
     private void horizontalCheck(int c, int r, int queenCounter) {
         for (int i = c + 1; i < 8; i++) {
             if (board.getField(r + 1, i + 1).hasQueen()) {
-                flag = true;
+                isThreat = true;
                 ChessField foundField = board.getField(i + 1, c + 1);
                 System.out.println("found horizontal! " + "For Queen: " + queenCounter + " Row: "
                         + foundField.getRow() + " Column: " + foundField.getColumn());
@@ -135,7 +160,7 @@ public class Chessboard {
     private void verticalCheck(int c, int r, int queenCounter) {
         for (int i = r + 1; i < 8; i++) {
             if (board.getField(i + 1, c + 1).hasQueen()) {
-                flag = true;
+                isThreat = true;
                 ChessField foundField = board.getField(i + 1, c + 1);
                 System.out.println("found vertical! " + "For Queen: " + queenCounter + " Row: "
                         + foundField.getRow() + " Column: " + foundField.getColumn());
@@ -144,62 +169,76 @@ public class Chessboard {
     }
 
     private void diagonalCheckBottomRight(int c, int r, int queenCounter) {
-        int counter1 = c + 1;
+        int colCounter = c + 1;
         for (int i = r + 1; i < 8; i++) {
             if (i < 0) i = 0;
-            if (counter1 < 0) counter1 = 0;
-            if (board.getField(i + 1, counter1 + 1).hasQueen()) {
-                flag = true;
-                ChessField foundField = board.getField(i + 1, counter1 + 1);
+            if (colCounter < 0) colCounter = 0;
+            if (board.getField(i + 1, colCounter + 1).hasQueen()) {
+                isThreat = true;
+                ChessField foundField = board.getField(i + 1, colCounter + 1);
                 System.out.println("found diagonally! ++ " + "For Queen: " + queenCounter + " Row: "
                         + foundField.getRow() + " Column: " + foundField.getColumn());
             }
-            if (counter1 < 7) counter1++;
+            if (colCounter < 7) colCounter++;
         }
     }
 
     private void diagonalCheckTopLeft(int c, int r, int queenCounter) {
-        int counter2 = c - 1;
+        int colCounter = c - 1;
         for (int i = r - 1; i > 0; i--) {
             if (i < 0) i = 0;
-            if (counter2 < 0) counter2 = 0;
-            if (board.getField(i + 1, counter2 + 1).hasQueen()) {
-                flag = true;
-                ChessField foundField = board.getField(i + 1, counter2 + 1);
+            if (colCounter < 0) colCounter = 0;
+            if (board.getField(i + 1, colCounter + 1).hasQueen()) {
+                isThreat = true;
+                ChessField foundField = board.getField(i + 1, colCounter + 1);
                 System.out.println("found diagonally! -- " + "For Queen: " + queenCounter + " Row: "
                         + foundField.getRow() + " Column: " + foundField.getColumn());
             }
-            if (counter2 > 0) counter2--;
+            if (colCounter > 0) colCounter--;
         }
     }
 
     private void diagonalCheckBottomLeft(int c, int r, int queenCounter) {
-        int counter3 = c - 1;
+        int colCounter = c - 1;
         for (int i = r + 1; i < 8; i++) {
             if (i < 0) i = 0;
-            if (counter3 < 0) counter3 = 0;
-            if (board.getField(i + 1, counter3 + 1).hasQueen()) {
-                flag = true;
-                ChessField foundField = board.getField(i + 1, counter3 + 1);
+            if (colCounter < 0) colCounter = 0;
+            if (board.getField(i + 1, colCounter + 1).hasQueen()) {
+                isThreat = true;
+                ChessField foundField = board.getField(i + 1, colCounter + 1);
                 System.out.println("found diagonally! +- " + "For Queen: " + queenCounter + " Row: "
                         + foundField.getRow() + " Column: " + foundField.getColumn());
             }
-            if (counter3 > 0) counter3--;
+            if (colCounter > 0) colCounter--;
         }
     }
 
     private void diagonalCheckTopRight(int c, int r, int queenCounter) {
-        int counter4 = c + 1;
+        int colCounter = c + 1;
         for (int i = r - 1; i > 0; i--) {
             if (i < 0) i = 0;
-            if (counter4 < 0) counter4 = 0;
-            if (board.getField(i + 1, counter4 + 1).hasQueen()) {
-                flag = true;
-                ChessField foundField = board.getField(i + 1, counter4 + 1);
+            if (colCounter < 0) colCounter = 0;
+            if (board.getField(i + 1, colCounter + 1).hasQueen()) {
+                isThreat = true;
+                ChessField foundField = board.getField(i + 1, colCounter + 1);
                 System.out.println("found diagonally! -+ " + "For Queen: " + queenCounter + " Row: "
                         + foundField.getRow() + " Column: " + foundField.getColumn());
             }
-            if (counter4 < 7) counter4++;
+            if (colCounter < 7) colCounter++;
+        }
+    }
+
+
+    //TODO implement recursive method
+    private void backTrackQueens() {
+        //you can delete this, its just some testing around
+        if (checkThreat()) {
+            removeQueen(firstFound.getRow(), firstFound.getColumn());
+            if (!board.getField(firstFound.getRow(), firstFound.getColumn() + 1).hasQueen()) {
+                putQueen(firstFound.getRow(), firstFound.getColumn() + 1);
+                displayBoard();
+                checkThreat();
+            }
         }
     }
 }
