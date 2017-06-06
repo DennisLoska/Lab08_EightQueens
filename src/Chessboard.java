@@ -14,6 +14,8 @@ public class Chessboard {
      */
     public static void main(String[] args){
         Chessboard board = new Chessboard();
+        board.selectField(3,6);
+        System.out.println(board.selectField(2,2));
     }
 
     /*
@@ -33,5 +35,9 @@ public class Chessboard {
                 if (j==7) System.out.print("\n");
             }
         }
+    }
+
+    private int selectField(int column, int row){
+        return chessBoard[row-1][column-1];
     }
 }
