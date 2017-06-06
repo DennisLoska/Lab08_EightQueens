@@ -18,8 +18,10 @@ public class Chessboard {
      */
     public static void main(String[] args) {
         board = new Chessboard();
-        board.putQueen(1, 1);
-        board.putQueen(5, 5);
+        board.putQueen(4, 1);
+        board.putQueen(8, 1);
+        board.putQueen(8, 5);
+        board.putQueen(2, 3);
         board.displayBoard();
         board.checkThreat();
     }
@@ -100,12 +102,14 @@ public class Chessboard {
                     }
 
                     // descending diagonal check
+                    /*
                     for (int i = r++; i < 8; i++) {
                         if (board.getField(i + 1, i + 1).hasQueen()) {
                             flag = true;
                             System.out.println("found diagonally!");
                         }
                     }
+                    */
 
                     // ascending diagonal check
 
