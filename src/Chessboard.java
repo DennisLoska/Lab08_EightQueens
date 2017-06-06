@@ -22,8 +22,9 @@ public class Chessboard {
         //board.putQueen(5,2);
         //board.putQueen(8, 1);
         //board.putQueen(8, 5);
-        board.putQueen(5, 5);
-        board.putQueen(2, 3);
+        board.putQueen(4, 5);
+        //board.putQueen(2, 3);
+        board.putQueen(6, 7);
         board.displayBoard();
         board.checkThreat();
     }
@@ -88,7 +89,7 @@ public class Chessboard {
             for (int c = 0; c < 8; c++) {
                 if (board.getField(r + 1, c + 1).hasQueen()) {
 
-                    // horizontal check - WORKING
+                    // horizontal check
                     for (int i = c + 1; i < 8; i++) {
                         if (board.getField(r + 1, i + 1).hasQueen()) {
                             flag = true;
@@ -96,7 +97,7 @@ public class Chessboard {
                         }
                     }
 
-                    // vertical check - WORKING
+                    // vertical check
                     for (int i = r + 1; i < 8; i++) {
                         if (board.getField(i + 1, c + 1).hasQueen()) {
                             flag = true;
@@ -104,46 +105,46 @@ public class Chessboard {
                         }
                     }
 
-                    // descending diagonal check - NOT WORKING
+                    // asscending diagonal check bottom right
+                    int counter1 = c + 1;
                     for (int i = r + 1; i < 8; i++) {
-                        for (int j = c + 1; j < 8; j++) {
-                            if (board.getField(i + 1, j + 1).hasQueen()) {
-                                flag = true;
-                                System.out.println("found diagonally! ++ ");
-                            }
+                        if (board.getField(i + 1, counter1 + 1).hasQueen()) {
+                            flag = true;
+                            System.out.println("found diagonally! ++ ");
                         }
+                        if (counter1 < 7) counter1++;
                     }
+
+                    // descending diagonal check top left
+                    int counter2 = c - 1;
                     for (int i = r - 1; i > 0; i--) {
-                        for (int j = c - 1; j > 0; j--) {
-                            if (board.getField(i + 1, j + 1).hasQueen()) {
-                                flag = true;
-                                System.out.println("found diagonally! -- ");
-                            }
+                        if (board.getField(i + 1, counter2 + 1).hasQueen()) {
+                            flag = true;
+                            System.out.println("found diagonally! -- ");
                         }
+                        if (counter2 > 0) counter2--;
                     }
+                    // asdescending diagonal check bottom left
+                    int counter3 = c - 1;
                     for (int i = r + 1; i < 8; i++) {
-                        for (int j = c - 1; j > 0; j--) {
-                            if (board.getField(i + 1, j + 1).hasQueen()) {
-                                flag = true;
-                                System.out.println("found diagonally! +- ");
-                            }
+                        if (board.getField(i + 1, counter3 + 1).hasQueen()) {
+                            flag = true;
+                            System.out.println("found diagonally! +- ");
                         }
+                        if (counter3 > 0) counter3--;
                     }
+
+                    // desascending diagonal check top right
+                    int counter4 = c + 1;
                     for (int i = r - 1; i > 0; i--) {
-                        for (int j = c + 1; j < 8; j++) {
-                            if (board.getField(i + 1, j + 1).hasQueen()) {
-                                flag = true;
-                                System.out.println("found diagonally! -+ ");
-                            }
+                        if (board.getField(i + 1, counter4 + 1).hasQueen()) {
+                            flag = true;
+                            System.out.println("found diagonally! -+ ");
                         }
+                        if (counter4 < 7) counter4++;
                     }
-
-
-                    // ascending diagonal check
-
                 }
             }
         }
     }
-
 }
