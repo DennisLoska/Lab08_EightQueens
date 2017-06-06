@@ -6,16 +6,19 @@ public class ChessField {
     private int display;
     private int column;
     private int row;
-    private boolean hasQueen;
+    private boolean hasQueen = false;
 
-    public ChessField(int display, int column, int row){
-        this.display=display;
+    public ChessField(int column, int row) {
         this.column = column;
         this.row = row;
     }
 
     public int getDisplay() {
         return display;
+    }
+
+    public void setDisplay(int display) {
+        this.display = display;
     }
 
     public boolean hasQueen() {
