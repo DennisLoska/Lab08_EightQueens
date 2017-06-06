@@ -18,16 +18,19 @@ public class Chessboard {
      */
     public static void main(String[] args) {
         board = new Chessboard();
-        board.putQueen(4, 1);
-        board.putQueen(8, 1);
-        board.putQueen(8, 5);
+        //board.putQueen(4, 1);
+        //board.putQueen(5,2);
+        //board.putQueen(8, 1);
+        //board.putQueen(8, 5);
+        board.putQueen(5, 5);
         board.putQueen(2, 3);
         board.displayBoard();
         board.checkThreat();
     }
 
     /*
-        Erstellt ein Schachbrett aus ints, wo "display 0 für "weiß" und 1 für "schwarz steht. Dieses wird dann in der Konsole angezeigt.
+        Erstellt ein Schachbrett aus ints, wo "display 0 für "weiß" und 1 für "schwarz"
+        steht. Dieses wird dann in der Konsole angezeigt.
      */
     private void createBoard(ArrayList<ArrayList<ChessField>> chessBoard) {
         for (int row = 0; row < 8; row++) {
@@ -85,7 +88,7 @@ public class Chessboard {
             for (int c = 0; c < 8; c++) {
                 if (board.getField(r + 1, c + 1).hasQueen()) {
 
-                    // horizontal check
+                    // horizontal check - WORKING
                     for (int i = c + 1; i < 8; i++) {
                         if (board.getField(r + 1, i + 1).hasQueen()) {
                             flag = true;
@@ -93,7 +96,7 @@ public class Chessboard {
                         }
                     }
 
-                    // vertical check
+                    // vertical check - WORKING
                     for (int i = r + 1; i < 8; i++) {
                         if (board.getField(i + 1, c + 1).hasQueen()) {
                             flag = true;
@@ -101,15 +104,40 @@ public class Chessboard {
                         }
                     }
 
-                    // descending diagonal check
-                    /*
-                    for (int i = r++; i < 8; i++) {
-                        if (board.getField(i + 1, i + 1).hasQueen()) {
-                            flag = true;
-                            System.out.println("found diagonally!");
+                    // descending diagonal check - NOT WORKING
+                    for (int i = r + 1; i < 8; i++) {
+                        for (int j = c + 1; j < 8; j++) {
+                            if (board.getField(i + 1, j + 1).hasQueen()) {
+                                flag = true;
+                                System.out.println("found diagonally! ++ ");
+                            }
                         }
                     }
-                    */
+                    for (int i = r - 1; i > 0; i--) {
+                        for (int j = c - 1; j > 0; j--) {
+                            if (board.getField(i + 1, j + 1).hasQueen()) {
+                                flag = true;
+                                System.out.println("found diagonally! -- ");
+                            }
+                        }
+                    }
+                    for (int i = r + 1; i < 8; i++) {
+                        for (int j = c - 1; j > 0; j--) {
+                            if (board.getField(i + 1, j + 1).hasQueen()) {
+                                flag = true;
+                                System.out.println("found diagonally! +- ");
+                            }
+                        }
+                    }
+                    for (int i = r - 1; i > 0; i--) {
+                        for (int j = c + 1; j < 8; j++) {
+                            if (board.getField(i + 1, j + 1).hasQueen()) {
+                                flag = true;
+                                System.out.println("found diagonally! -+ ");
+                            }
+                        }
+                    }
+
 
                     // ascending diagonal check
 
