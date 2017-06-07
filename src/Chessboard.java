@@ -21,7 +21,10 @@ public class Chessboard {
         board = new Chessboard();
         board.getField(6, 3);
         board.putQueen(6, 3);
+        board.getField(6,3).setDisplay(8);
+        board.putQueen(6, 5);
         System.out.println(board.getField(6, 3).hasQueen());
+
     }
 
     /*
@@ -53,8 +56,16 @@ public class Chessboard {
                         field.setDisplay(1);
                     }
                 }
-                System.out.print(chessBoard.get(row).get(col).getDisplay() + " ");
-                if (col == 7) System.out.print("\n");
+//                System.out.print(chessBoard.get(row).get(col).getDisplay() + " | ");
+                System.out.println(board.getField(row, col).getDisplay() + " | ");
+                if (col == 7) {
+                    System.out.print("\n");
+                    String ruler = "";
+                    for (int i = 0; i < 30; i++){
+                        ruler += "-";
+                    }
+                    System.out.println(ruler);
+                }
             }
         }
     }
