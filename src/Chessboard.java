@@ -5,7 +5,6 @@ public class Chessboard {
     private ArrayList<ArrayList<ChessField>> chessBoard = new ArrayList<ArrayList<ChessField>>();
     private static Chessboard board;
     private boolean isThreat = false;
-    private ChessField firstFound;
     private ChessField last;
     private boolean horizontalThreat;
     private boolean verticalThreat;
@@ -132,7 +131,7 @@ public class Chessboard {
         int queenCounter = 0;
         for (int r = 0; r < 8; r++) {
             for (int c = 0; c < 8; c++) {
-                firstFound = board.getField(r + 1, c + 1);
+                ChessField firstFound = board.getField(r + 1, c + 1);
                 if (firstFound.hasQueen()) {
                     last = firstFound;
                     // horizontal check
