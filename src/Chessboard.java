@@ -2,7 +2,8 @@ import java.util.ArrayList;
 
 public class Chessboard {
 
-    private ArrayList<ArrayList<ChessField>> chessBoard = new ArrayList<ArrayList<ChessField>>();
+    private ArrayList<ArrayList<ChessField>> chessBoard = new ArrayList<ArrayList<ChessField>>(8);
+    private ArrayList<ChessField> queens = new ArrayList<>();
     private static Chessboard board;
     private boolean isThreat = false;
     private ChessField last;
@@ -49,7 +50,7 @@ public class Chessboard {
         System.out.println(board.isThreat() + "\n");
 
         //fixing problem by using recursion in backTrackQueens()
-        board.backTrackQueens();
+        board.backTrackQueens(1);
         board.displayBoard();
         System.out.println(board.isThreat());
     }
@@ -133,7 +134,8 @@ public class Chessboard {
             for (int c = 0; c < 8; c++) {
                 ChessField firstFound = board.getField(r + 1, c + 1);
                 if (firstFound.hasQueen()) {
-                    last = firstFound;
+                    queens.add(queenCounter, firstFound);
+                    queenCounter++;
                     // horizontal check
                     horizontalCheck(c, r, queenCounter);
                     // vertical check
@@ -148,7 +150,6 @@ public class Chessboard {
                     diagonalCheckTopRight(c, r, queenCounter);
                 }
             }
-            queenCounter++;
         }
         return isThreat;
     }
@@ -243,11 +244,11 @@ public class Chessboard {
 
 
     //TODO implement recursive method and maybe adding a class Queens
-    private void backTrackQueens() {
+    private void backTrackQueens(int queenCounter) {
         //@Tony @Bernhard Ihr könnt diese Methode löschen wie ihr wollt, war nur ne erste Idee...
         if (checkThreat()) {
-            int row = last.getRow();
-            int col = last.getColumn();
+            int row = queens.get(queenCounter).getRow();
+            int col = queens.get(queenCounter).getColumn();
 
             //right
             if (col < 8) {
@@ -320,7 +321,11 @@ public class Chessboard {
                     displayBoard();
                     checkThreat();
                 }
-            } else backTrackQueens();
+            } else if (queenCounter < 8) {
+                queenCounter++;
+                backTrackQueens(queenCounter);
+            }
+
         } else {
             System.out.println("\nSoulution: ");
             displayBoard();
