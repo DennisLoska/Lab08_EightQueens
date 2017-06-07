@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Chessboard {
 
-    private ArrayList<ArrayList<ChessField>> chessBoard = new ArrayList<ArrayList<ChessField>>(8);
+    private ArrayList<ArrayList<ChessField>> chessBoard = new ArrayList<ArrayList<ChessField>>();
     private ArrayList<ChessField> queens = new ArrayList<>();
     private static Chessboard board;
     private boolean isThreat = false;
@@ -44,13 +44,9 @@ public class Chessboard {
         board.putQueen(6, 7);
         board.putQueen(3, 3);
 
-        //initializing problem/threats
-        board.displayBoard();
-        board.checkThreat();
-        System.out.println(board.isThreat() + "\n");
-
         //fixing problem by using recursion in backTrackQueens()
-        board.backTrackQueens(1);
+        board.displayBoard();
+        board.backTrackQueens(0);
         board.displayBoard();
         System.out.println(board.isThreat());
     }
@@ -183,6 +179,8 @@ public class Chessboard {
         for (int i = r + 1; i < 8; i++) {
             if (i < 0) i = 0;
             if (colCounter < 0) colCounter = 0;
+            if (i > 7) i = 7;
+            if (colCounter > 7) colCounter = 7;
             if (board.getField(i + 1, colCounter + 1).hasQueen()) {
                 isThreat = true;
                 bottomRightThreat = true;
@@ -255,8 +253,6 @@ public class Chessboard {
                 if (!board.getField(row, col + 1).hasQueen() && horizontalThreat) {
                     removeQueen(row, col);
                     putQueen(row, col + 1);
-                    displayBoard();
-                    checkThreat();
                 }
             }
             //left
@@ -264,8 +260,7 @@ public class Chessboard {
                 if (!board.getField(row, col - 1).hasQueen() && horizontalThreat) {
                     removeQueen(row, col);
                     putQueen(row, col - 1);
-                    displayBoard();
-                    checkThreat();
+                    backTrackQueens(queenCounter);
                 }
             }
             //up
@@ -273,8 +268,6 @@ public class Chessboard {
                 if (!board.getField(row - 1, col).hasQueen() && verticalThreat) {
                     removeQueen(row, col);
                     putQueen(row - 1, col);
-                    displayBoard();
-                    checkThreat();
                 }
             }
             //down
@@ -282,8 +275,7 @@ public class Chessboard {
                 if (!board.getField(row + 1, col).hasQueen() && verticalThreat) {
                     removeQueen(row, col);
                     putQueen(row + 1, col);
-                    displayBoard();
-                    checkThreat();
+                    backTrackQueens(queenCounter);
                 }
             }
             //bottom right
@@ -291,8 +283,6 @@ public class Chessboard {
                 if (!board.getField(row + 1, col + 1).hasQueen() && bottomRightThreat) {
                     removeQueen(row, col);
                     putQueen(row + 1, col + 1);
-                    displayBoard();
-                    checkThreat();
                 }
             }
             //top right
@@ -300,8 +290,7 @@ public class Chessboard {
                 if (!board.getField(row - 1, col + 1).hasQueen() && topRightThreat) {
                     removeQueen(row, col);
                     putQueen(row - 1, col + 1);
-                    displayBoard();
-                    checkThreat();
+                    backTrackQueens(queenCounter);
                 }
             }
             //bottom left
@@ -309,8 +298,6 @@ public class Chessboard {
                 if (!board.getField(row + 1, col - 1).hasQueen() && bottomLeftThreat) {
                     removeQueen(row, col);
                     putQueen(row + 1, col - 1);
-                    displayBoard();
-                    checkThreat();
                 }
             }
             //top left
@@ -318,18 +305,15 @@ public class Chessboard {
                 if (!board.getField(row - 1, col - 1).hasQueen() && topLeftThreat) {
                     removeQueen(row, col);
                     putQueen(row - 1, col - 1);
-                    displayBoard();
-                    checkThreat();
+                    backTrackQueens(queenCounter);
                 }
-            } else if (queenCounter < 8) {
+            } else if (queenCounter < 9) {
                 queenCounter++;
                 backTrackQueens(queenCounter);
             }
-
         } else {
             System.out.println("\nSoulution: ");
             displayBoard();
         }
-
     }
 }
