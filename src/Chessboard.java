@@ -324,7 +324,7 @@ public class Chessboard {
                     queens.set(queenCounter, board.getField(row - 1, col + 1));
                     backTrackQueens(queenCounter);
                 }
-            } else if (queenCounter < 9) {
+            } else if (queenCounter < 8) {
                 queenCounter++;
                 backTrackQueens(queenCounter);
             }
