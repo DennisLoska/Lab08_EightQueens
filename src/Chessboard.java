@@ -245,6 +245,7 @@ public class Chessboard {
 
     //TODO implement recursive method and maybe adding a class Queens
     private void backTrackQueens() {
+        //@Tony @Bernhard Ihr könnt diese Methode löschen wie ihr wollt, war nur ne erste Idee...
         if (checkThreat()) {
             int row = last.getRow();
             int col = last.getColumn();
