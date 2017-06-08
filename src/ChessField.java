@@ -30,10 +30,12 @@ public class ChessField {
     }
 
     public boolean hasQueen() {
+
         return hasQueen;
     }
 
     public void setHasQueen(boolean hasQueen) {
+
         this.hasQueen = hasQueen;
     }
 }
