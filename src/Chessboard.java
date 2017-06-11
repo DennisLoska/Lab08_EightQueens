@@ -159,12 +159,11 @@ public class Chessboard {
         diagonalCheckBottomLeft(col, row, queenCounter);
         // desascending diagonal check top right
         diagonalCheckTopRight(col, row, queenCounter);
-        if (queens.size() < 8) queenCounter++;
-        if (queens.size() == 8) {
-            queens.stream().filter(q -> q.isTopLeftThreat() || q.isTopRightThreat() ||
-                    q.isBottomLeftThreat() || q.isBottomRightThreat() || q.isHorizontalThreat()
-                    || q.isVerticalThreat()).forEach(q -> isThreat = true);
-        } else if (queens.size() == 8) isThreat = false;
+
+        queens.stream().filter(q -> q.isTopLeftThreat() || q.isTopRightThreat() ||
+                q.isBottomLeftThreat() || q.isBottomRightThreat() || q.isHorizontalThreat()
+                || q.isVerticalThreat()).forEach(q -> isThreat = true);
+
         return isThreat;
     }
 
@@ -177,6 +176,8 @@ public class Chessboard {
             if (board.getField(r, i).hasQueen()) {
                 isThreat = true;
                 board.getField(r, c).setHorizontalThreat(true);
+                queens.get(queenCounter).setHorizontalThreat(true);
+                break;
                 /*
                 ChessField foundField = board.getField(i, c);
                 System.out.println("found horizontal! " + "For Queen: " + queenCounter + " Row: "
@@ -191,6 +192,8 @@ public class Chessboard {
             if (board.getField(i, c).hasQueen()) {
                 isThreat = true;
                 board.getField(r, c).setVerticalThreat(true);
+                queens.get(queenCounter).setVerticalThreat(true);
+                break;
                 /*
                 ChessField foundField = board.getField(i, c);
                 System.out.println("found vertical! " + "For Queen: " + queenCounter + " Row: "
@@ -209,6 +212,7 @@ public class Chessboard {
             if (colCounter > 7) colCounter = 7;
             if (board.getField(i, colCounter).hasQueen()) {
                 board.getField(r, c).setBottomRightThreat(true);
+                queens.get(queenCounter).setBottomRightThreat(true);
                 /*
                 ChessField foundField = board.getField(i, colCounter);
                 System.out.println("found diagonally! ++ " + "For Queen: " + queenCounter + " Row: "
@@ -221,13 +225,15 @@ public class Chessboard {
 
     private void diagonalCheckTopLeft(int c, int r, int queenCounter) {
         int colCounter = c - 1;
-        for (int i = r - 1; i > 0; i--) {
+        for (int i = r; i > 0; i--) {
             if (i < 0) i = 0;
             if (colCounter < 0) colCounter = 0;
             if (i > 7) i = 7;
             if (colCounter > 7) colCounter = 7;
             if (board.getField(i, colCounter).hasQueen()) {
-                board.getField(r, c).setTopLeftThreat(true);
+                board.getField(r - 1, c).setTopLeftThreat(true);
+                queens.get(queenCounter).setTopLeftThreat(true);
+                break;
                 /*
                 ChessField foundField = board.getField(i, colCounter);
                 System.out.println("found diagonally! -- " + "For Queen: " + queenCounter + " Row: "
@@ -247,6 +253,8 @@ public class Chessboard {
             if (colCounter > 7) colCounter = 7;
             if (board.getField(i, colCounter).hasQueen()) {
                 board.getField(r, c).setBottomLeftThreat(true);
+                queens.get(queenCounter).setBottomLeftThreat(true);
+                break;
                 /*
                 ChessField foundField = board.getField(i, colCounter);
                 System.out.println("found diagonally! +- " + "For Queen: " + queenCounter + " Row: "
@@ -259,13 +267,15 @@ public class Chessboard {
 
     private void diagonalCheckTopRight(int c, int r, int queenCounter) {
         int colCounter = c + 1;
-        for (int i = r - 1; i > 0; i--) {
+        for (int i = r; i > 0; i--) {
             if (i < 0) i = 0;
             if (colCounter < 0) colCounter = 0;
             if (i > 7) i = 7;
             if (colCounter > 7) colCounter = 7;
-            if (board.getField(i, colCounter).hasQueen()) {
+            if (board.getField(i - 1, colCounter).hasQueen()) {
                 board.getField(r, c).setTopRightThreat(true);
+                queens.get(queenCounter).setTopRightThreat(true);
+                break;
                 /*
                 ChessField foundField = board.getField(i, colCounter);
                 System.out.println("found diagonally! -+ " + "For Queen: " + queenCounter + " Row: "
@@ -332,62 +342,59 @@ public class Chessboard {
                     }
                 }
                 backTrackQueens(queenCounter);
+
             } else if (queens.get(queenCounter).isBottomRightThreat()) {
-                if (row < 7 && row > 0 && col < 7 && col > 0) {
-                    removeQueen(row, col);
-                    if (!queens.get(queenCounter).isBottomLeftThreat())
-                        putQueen(row + 1, col - 1);
-                    if (!queens.get(queenCounter).isTopRightThreat())
-                        putQueen(row - 1, col + 1);
-                    if (!queens.get(queenCounter).isHorizontalThreat())
-                        putQueen(row, col + 1);
-                    if (!queens.get(queenCounter).isVerticalThreat())
-                        putQueen(row + 1, col);
-                    queens.set(queenCounter, board.getField(row + 1, col + 1));
-                    backTrackQueens(queenCounter);
-                }
+                removeQueen(row, col);
+                if (!queens.get(queenCounter).isBottomLeftThreat() && row < 7 && col > 0)
+                    putQueen(row + 1, col - 1);
+                else if (!queens.get(queenCounter).isTopRightThreat() && row > 0 && col < 7)
+                    putQueen(row - 1, col + 1);
+                else if (!queens.get(queenCounter).isHorizontalThreat() && col < 7)
+                    putQueen(row, col + 1);
+                else if (!queens.get(queenCounter).isVerticalThreat() && row < 7)
+                    putQueen(row + 1, col);
+                queens.set(queenCounter, board.getField(row + 1, col + 1));
+                backTrackQueens(queenCounter);
+
             } else if (queens.get(queenCounter).isTopRightThreat()) {
-                if (row < 7 && row > 0 && col < 7 && col > 0) {
-                    removeQueen(row, col);
-                    if (!queens.get(queenCounter).isTopLeftThreat())
-                        putQueen(row - 1, col - 1);
-                    if (!queens.get(queenCounter).isBottomRightThreat())
-                        putQueen(row + 1, col + 1);
-                    if (!queens.get(queenCounter).isHorizontalThreat())
-                        putQueen(row, col + 1);
-                    if (!queens.get(queenCounter).isVerticalThreat())
-                        putQueen(row + 1, col);
-                    queens.set(queenCounter, board.getField(row - 1, col + 1));
-                    backTrackQueens(queenCounter);
-                }
+                removeQueen(row, col);
+                if (!queens.get(queenCounter).isTopLeftThreat() && col > 0 && row > 0)
+                    putQueen(row - 1, col - 1);
+                else if (!queens.get(queenCounter).isBottomRightThreat() && row < 7 && col < 7)
+                    putQueen(row + 1, col + 1);
+                else if (!queens.get(queenCounter).isHorizontalThreat() && col < 7)
+                    putQueen(row, col + 1);
+                else if (!queens.get(queenCounter).isVerticalThreat() && row < 7)
+                    putQueen(row + 1, col);
+                queens.set(queenCounter, board.getField(row - 1, col + 1));
+                backTrackQueens(queenCounter);
+
             } else if (queens.get(queenCounter).isBottomLeftThreat()) {
-                if (row < 7 && row > 0 && col < 7 && col > 0) {
-                    removeQueen(row, col);
-                    if (!queens.get(queenCounter).isTopLeftThreat())
-                        putQueen(row - 1, col - 1);
-                    if (!queens.get(queenCounter).isBottomRightThreat())
-                        putQueen(row + 1, col + 1);
-                    if (!queens.get(queenCounter).isHorizontalThreat())
-                        putQueen(row, col + 1);
-                    if (!queens.get(queenCounter).isVerticalThreat())
-                        putQueen(row + 1, col);
-                    queens.set(queenCounter, board.getField(row + 1, col - 1));
-                    backTrackQueens(queenCounter);
-                }
+                removeQueen(row, col);
+                if (!queens.get(queenCounter).isBottomRightThreat() && row < 7 && col < 7)
+                    putQueen(row + 1, col + 1);
+                else if (!queens.get(queenCounter).isTopLeftThreat() && col > 0 && row > 0)
+                    putQueen(row - 1, col - 1);
+                else if (!queens.get(queenCounter).isHorizontalThreat() && col < 7)
+                    putQueen(row, col + 1);
+                else if (!queens.get(queenCounter).isVerticalThreat() && row < 7)
+                    putQueen(row + 1, col);
+                queens.set(queenCounter, board.getField(row + 1, col - 1));
+                backTrackQueens(queenCounter);
+
             } else if (queens.get(queenCounter).isTopLeftThreat()) {
-                if (row < 7 && row > 0 && col < 7 && col > 0) {
-                    removeQueen(row, col);
-                    if (!queens.get(queenCounter).isTopRightThreat())
-                        putQueen(row - 1, col + 1);
-                    if (!queens.get(queenCounter).isBottomLeftThreat())
-                        putQueen(row + 1, col - 1);
-                    if (!queens.get(queenCounter).isHorizontalThreat())
-                        putQueen(row, col + 1);
-                    if (!queens.get(queenCounter).isVerticalThreat())
-                        putQueen(row + 1, col);
-                    queens.set(queenCounter, board.getField(row - 1, col + 1));
-                    backTrackQueens(queenCounter);
-                }
+                removeQueen(row, col);
+                if (!queens.get(queenCounter).isTopRightThreat() && row > 0 && col < 7)
+                    putQueen(row - 1, col + 1);
+                else if (!queens.get(queenCounter).isBottomLeftThreat() && row < 7 && col > 0)
+                    putQueen(row + 1, col - 1);
+                else if (!queens.get(queenCounter).isHorizontalThreat() && col < 7)
+                    putQueen(row, col + 1);
+                else if (!queens.get(queenCounter).isVerticalThreat() && row < 7)
+                    putQueen(row + 1, col);
+                queens.set(queenCounter, board.getField(row - 1, col + 1));
+                backTrackQueens(queenCounter);
+
             } else if (queenCounter < 7) {
                 queenCounter++;
                 backTrackQueens(queenCounter);
