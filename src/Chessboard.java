@@ -117,8 +117,11 @@ public class Chessboard {
         chessBoard.get(row).get(column).setTopLeftThreat(false);
         chessBoard.get(row).get(column).setHorizontalThreat(false);
         chessBoard.get(row).get(column).setVerticalThreat(false);
-        if (column % 2 == 0) chessBoard.get(row).get(column).setDisplay(0);
-        else chessBoard.get(row).get(column).setDisplay(1);
+        if (column % 2 != 0 && row % 2 != 0) chessBoard.get(row).get(column).setDisplay(0);
+        else if (column % 2 != 0 && row % 2 != 0) chessBoard.get(row).get(column).setDisplay(0);
+        else if (column % 2 != 0 && row % 2 == 0) chessBoard.get(row).get(column).setDisplay(1);
+        else if (column % 2 == 0 && row % 2 == 0) chessBoard.get(row).get(column).setDisplay(0);
+        else if (column % 2 == 0 && row % 2 != 0) chessBoard.get(row).get(column).setDisplay(1);
     }
 
 
@@ -286,6 +289,7 @@ public class Chessboard {
                 }
                 backTrackQueens(queenCounter);
             }
+            //trying to move queen horizontally
             if (queens.get(queenCounter).isVerticalThreat()) {
                 if (col < 7) {
                     removeQueen(row, col);
