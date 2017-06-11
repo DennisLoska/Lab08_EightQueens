@@ -364,6 +364,7 @@ public class Chessboard {
                 backTrackQueens(queenCounter);
 
             } else if (queens.get(queenCounter).isTopRightThreat()) {
+
                 removeQueen(row, col);
                 if (!queens.get(queenCounter).isTopLeftThreat() && col > 0 && row > 0)
                     putQueen(row - 1, col - 1);
