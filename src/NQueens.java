@@ -3,6 +3,7 @@
  */
 import java.util.Arrays;
 
+//http://algorithms.tutorialhorizon.com/backtracking-n-queens-problem-better-solution/
 public class NQueens {
     static int[] result; // this array will store the result
 
