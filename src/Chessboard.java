@@ -117,9 +117,9 @@ public class Chessboard {
         for later usage in recursive method
      */
     private void removeQueen(int row, int column) {
-        chessBoard.get(row - 1).get(column - 1).setHasQueen(false);
-        if (column % 2 == 0) chessBoard.get(row - 1).get(column - 1).setDisplay(0);
-        else chessBoard.get(row - 1).get(column - 1).setDisplay(1);
+        chessBoard.get(row).get(column).setHasQueen(false);
+        if (column % 2 == 0) chessBoard.get(row).get(column).setDisplay(0);
+        else chessBoard.get(row).get(column).setDisplay(1);
     }
 
 
@@ -135,7 +135,6 @@ public class Chessboard {
                 if (firstFound.hasQueen()) {
                     if (queens.size() < 8) {
                         queens.add(queenCounter, firstFound);
-                        queenCounter++;
                     }
                     // horizontal check
                     horizontalCheck(c, r, queenCounter);
@@ -149,6 +148,7 @@ public class Chessboard {
                     diagonalCheckBottomLeft(c, r, queenCounter);
                     // desascending diagonal check top right
                     diagonalCheckTopRight(c, r, queenCounter);
+                    if (queens.size()<8)queenCounter++;;
                 }
             }
         }
@@ -333,8 +333,11 @@ public class Chessboard {
                     queens.set(queenCounter, board.getField(row - 1, col + 1));
                     backTrackQueens(queenCounter);
                 }
-                // TODO: what if queenCounter is bigger than 8
-            } else if (queenCounter < 8) {
+
+
+            }
+            else if (queenCounter < 8) {
+            // TODO: what if queenCounter is bigger than 8
                 queenCounter++;
                 backTrackQueens(queenCounter);
             }

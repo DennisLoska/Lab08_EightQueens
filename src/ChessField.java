@@ -22,11 +22,11 @@ public class ChessField {
     }
 
     public int getColumn() {
-        return column+1;
+        return column;
     }
 
     public int getRow() {
-        return row+1;
+        return row;
     }
 
     public boolean hasQueen() {
