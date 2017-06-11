@@ -29,14 +29,14 @@ public class Chessboard {
     public static void main(String[] args) {
         board = new Chessboard();
         //adding 8 queens
-        board.putQueen(1 - 1, 1 - 1);
-        board.putQueen(1 - 1, 2 - 1);
-        board.putQueen(1 - 1, 3 - 1);
-        board.putQueen(1 - 1, 4 - 1);
-        board.putQueen(1 - 1, 5 - 1);
-        board.putQueen(1 - 1, 6 - 1);
-        board.putQueen(1 - 1, 7 - 1);
-        board.putQueen(1 - 1, 8 - 1);
+        board.putQueen_1(0, 1 - 1);
+        board.putQueen_1(0, 2 - 1);
+        board.putQueen_1(0, 3 - 1);
+        board.putQueen_1(0, 4 - 1);
+        board.putQueen_1(0, 5 - 1);
+        board.putQueen_1(0, 6 - 1);
+        board.putQueen_1(0, 7 - 1);
+        board.putQueen_1(0, 8 - 1);
 
         //making the list
         board.createQueensList(0);
@@ -116,10 +116,19 @@ public class Chessboard {
 
     /*
         Das Feld wird anhand column und row gewählt und der boolean-wert für die Dame des Feldes auf "true" gesetzt
+    */
+    private void putQueen_1(int row, int column) {
+        chessBoard.get(row).get(column).setHasQueen(true);
+        chessBoard.get(row).get(column).setDisplay(2);
+    }
+
+    /*
+        Das Feld wird anhand column und row gewählt und der boolean-wert für die Dame des Feldes auf "true" gesetzt
      */
     private void putQueen(int row, int column) {
         chessBoard.get(row).get(column).setHasQueen(true);
         chessBoard.get(row).get(column).setDisplay(2);
+        queens.set(queenCounter, board.getField(row, column));
     }
 
     /*
@@ -301,7 +310,6 @@ public class Chessboard {
                     for (int i = 1; i < 8; i++) {
                         if (row < c && !chessBoard.get(row + i).get(col).hasQueen()) {
                             putQueen(row + i, col);
-                            queens.set(queenCounter, board.getField(row + i, col));
                             break;
                         }
                         c--;
@@ -311,11 +319,11 @@ public class Chessboard {
                     for (int i = 7; i >= 0; i--) {
                         if (!chessBoard.get(row - i).get(col).hasQueen()) {
                             putQueen(row - i, col);
-                            queens.set(queenCounter, board.getField(row - i, col));
                             break;
                         }
                     }
                 }
+                queens.get(queenCounter).setHorizontalThreat(false);
                 backTrackQueens(queenCounter);
             }
             //trying to move queen horizontally
@@ -326,7 +334,6 @@ public class Chessboard {
                     for (int i = 1; i < 8; i++) {
                         if (col < c && !chessBoard.get(row).get(col + 1).hasQueen()) {
                             putQueen(row, col + 1);
-                            queens.set(queenCounter, board.getField(row, col + 1));
                             break;
                         }
                         c--;
@@ -336,11 +343,11 @@ public class Chessboard {
                     for (int i = 7; i >= 0; i--) {
                         if (!chessBoard.get(row).get(col - i).hasQueen()) {
                             putQueen(row, col - i);
-                            queens.set(queenCounter, board.getField(row, col - i));
                             break;
                         }
                     }
                 }
+                queens.get(queenCounter).setVerticalThreat(false);
                 backTrackQueens(queenCounter);
 
             } else if (queens.get(queenCounter).isBottomRightThreat()) {
@@ -353,7 +360,7 @@ public class Chessboard {
                     putQueen(row, col + 1);
                 else if (!queens.get(queenCounter).isVerticalThreat() && row < 7)
                     putQueen(row + 1, col);
-                queens.set(queenCounter, board.getField(row + 1, col + 1));
+                queens.get(queenCounter).setBottomRightThreat(false);
                 backTrackQueens(queenCounter);
 
             } else if (queens.get(queenCounter).isTopRightThreat()) {
@@ -366,7 +373,7 @@ public class Chessboard {
                     putQueen(row, col + 1);
                 else if (!queens.get(queenCounter).isVerticalThreat() && row < 7)
                     putQueen(row + 1, col);
-                queens.set(queenCounter, board.getField(row - 1, col + 1));
+                queens.get(queenCounter).setTopRightThreat(false);
                 backTrackQueens(queenCounter);
 
             } else if (queens.get(queenCounter).isBottomLeftThreat()) {
@@ -379,7 +386,7 @@ public class Chessboard {
                     putQueen(row, col + 1);
                 else if (!queens.get(queenCounter).isVerticalThreat() && row < 7)
                     putQueen(row + 1, col);
-                queens.set(queenCounter, board.getField(row + 1, col - 1));
+                queens.get(queenCounter).setBottomLeftThreat(false);
                 backTrackQueens(queenCounter);
 
             } else if (queens.get(queenCounter).isTopLeftThreat()) {
@@ -392,7 +399,7 @@ public class Chessboard {
                     putQueen(row, col + 1);
                 else if (!queens.get(queenCounter).isVerticalThreat() && row < 7)
                     putQueen(row + 1, col);
-                queens.set(queenCounter, board.getField(row - 1, col + 1));
+                queens.get(queenCounter).setTopLeftThreat(false);
                 backTrackQueens(queenCounter);
 
             } else if (queenCounter < 7) {
