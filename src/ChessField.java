@@ -21,14 +21,6 @@ public class ChessField {
         this.display = display;
     }
 
-    public int getColumn() {
-        return column;
-    }
-
-    public int getRow() {
-        return row;
-    }
-
     public boolean hasQueen() {
 
         return hasQueen;

@@ -17,7 +17,6 @@ public class Chessboard {
      */
     public static void main(String[] args) {
         board = new Chessboard();
-        //fixing problem by using recursion in backTrackQueens()
         board.displayBoard();
         board.backTrackQueens();
     }
@@ -85,7 +84,7 @@ public class Chessboard {
     }
 
     /*
-        for later usage in recursive method
+        Entrfernt eine Dame und lässt das Schachbrett entsprechend wieder aussehen
     */
     private void removeQueen(int row, int column) {
         chessBoard.get(row).get(column).setHasQueen(false);
@@ -109,7 +108,7 @@ public class Chessboard {
                 if (placeQueens(queenCounter + 1)) {
                     return true;
                 }
-                //BACKTRACK
+                //Backtracking-Funktion
                 removeQueen(row, queenCounter);
             }
         }
@@ -121,7 +120,7 @@ public class Chessboard {
         Checked, ob Damen sich gefährden **AUFGABE 2**
      */
     private boolean checkThreat(int row, int queenCounter) {
-        //vertical
+        //horizontal
         for (int i = 0; i < queenCounter; i++) {
             if (board.getField(row, i).hasQueen()) {
                 return false;
@@ -142,6 +141,9 @@ public class Chessboard {
         return true;
     }
 
+    /*
+        AUFGABE 4
+     */
     private void backTrackQueens() {
         if (placeQueens(0)) {
             System.out.println("\nSoulution: ");
